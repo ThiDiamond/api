@@ -2,4 +2,3 @@ node_modules
 data
 .vscode
 yarn-error.log
-.env
