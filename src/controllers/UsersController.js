@@ -8,10 +8,10 @@ module.exports = {
   },
   async show(req, res) {
     try {
-      const user = await (await User.findById(req.params.id))
-        .populate('tools')
-        .execPopulate();
-      return user ? res.json(user) : res.status(404).send();
+      const user = await User.findById(req.params.id);
+      const processedUser = await user.populate('tools').execPopulate();
+
+      return res.json(processedUser);
     } catch (error) {
       res.status(404).send();
     }
@@ -30,7 +30,12 @@ module.exports = {
       const { id } = req.params;
       const { userId } = req;
 
-      if (id !== userId) return res.status(400).send('Unauthorized');
+      await User.findById(id);
+
+      if (id !== userId) {
+        return res.status(400).send({ error: 'Unauthorized' });
+      }
+
       const user = await User.findByIdAndUpdate(id, req.body, {
         new: true,
       });
@@ -46,9 +51,11 @@ module.exports = {
       const { id } = req.params;
       const { userId } = req;
 
-      if (id !== userId) return res.status(400).send('Unauthorized');
-
       const user = await User.findById(id);
+
+      if (id !== userId) {
+        return res.status(400).send({ error: 'Unauthorized' });
+      }
 
       await user.remove();
       return res.status(204).send();

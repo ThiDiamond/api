@@ -1,0 +1,347 @@
+FORMAT: 1A
+HOST: http://api.sample.com.br/v1
+
+# Sample da API
+
+Descrição da Sample.
+
+# Group API
+
+## Sobre [/]
+
+Aqui podemos descrever detalhes que são comuns a todos os serviços como formatos, headers, tipos de erros, etc
+
+# Group Tools
+
+## Tools [/tools]
+
+### Create tool [POST]
+
++ Request Create a tool
+
+    + Headers
+
+            Accept: application/json
+            Content-Type: application/json
+    + Attributes (CreatedTool)
+
++ Response 201 (application/json)
+    + Attributes (Tool)
+
+### List all tools [GET]
+
++ Response 200 (application/json)
+    + Attributes (array[CreatedTool])
+
++ Response 404 (application/json)
+    + Attributes (ErrorNotFound)
+
+
+## Tool [/tools/{id_tool}]
+
++ Parameters
+    + id_tool: 1 (string, required) - Tool ID
+
+### List single tool [GET]
+
++ Response 200 (application/json)
+    + Attributes (CreatedTool)
+
++ Response 404 (application/json)
+    + Attributes (ErrorNotFound)
+
+
+### Delete tool [DELETE]
+
++ Response 204 (application/json)
+
++ Response 404 (application/json)
+    + Attributes (ErrorNotFound)
+
+
+### Update tool [POST]
+
++ Request Update a tool
+
+    + Headers
+
+            Accept: application/json
+            Content-Type: application/json
+    + Attributes (Tool)
+
++ Response 201 (application/json)
+    + Attributes (CreatedTool)
+
++ Response 404 (application/json)
+    + Attributes (ErrorNotFound)
+
+
+
+# Group Users
+
+## Users [/users]
+
+### Create user [POST]
+
++ Request Create a user
+
+    + Headers
+
+            Accept: application/json
+            Content-Type: application/json
+    + Attributes (User)
+
++ Response 201 (application/json)
+    + Attributes (CreatedUser)
+
+### List all users [GET]
+
++ Response 200 (application/json)
+    + Attributes (array[CreatedUser])
+
++ Response 404 (application/json)
+    + Attributes (ErrorNotFound)
+
+
+## User [/users/{id_user}]
+
++ Parameters
+    + id_user: 1 (string, required) - User ID
+
+### List single user [GET]
+
++ Response 200 (application/json)
+    + Attributes (CreatedUser)
+
++ Response 404 (application/json)
+    + Attributes (ErrorNotFound)
+
+
+
+
+## Delete user PROTECTED [DELETE]
+
++ Request Delete a user
+
+ + Headers
+
+            Authentication: Bearer JWT
+
++ Response 204 (application/json)
+
++ Response 404 (application/json)
+    + Attributes (ErrorNotFound)
+
++ Response 400 (application/json)
+    + Attributes (ErrorUnauthorized)
+
++ Response 401 (application/json)
+    + Attributes (ErrorToken)
+    + Attributes (ErrorNoToken)
+    + Attributes (ErrorTokenInvalid)
+    + Attributes (ErrorTokenMalformatted)
+
++ Request Error token length
+
+    + Headers
+
+            Authentication: Bearer JWT
+
+
++ Response 401 (application/json)
+    + Attributes (ErrorToken)
+
+
++ Request Invalid token
+
+    + Headers
+
+            Authentication: Bearer JWT
+
+
+
++ Response 401 (application/json)
+    + Attributes (ErrorTokenInvalid)
+
+
++ Request No token provided
+
+    + Headers
+
+            Authentication: Bearer JWT
+
+
+
++ Response 401 (application/json)
+    + Attributes (ErrorNoToken)
+
+
++ Request Token malformatted
+
+    + Headers
+
+            Authentication: Bearer JWT
+
+
++ Response 401 (application/json)
+    + Attributes (ErrorTokenMalformatted)
+
+
+
+## Update user PROTECTED [PUT]
+
++ Request Update a user
+
+    + Headers
+
+            Authentication: Bearer JWT
+            Accept: application/json
+            Content-Type: application/json
+    + Attributes (User)
+
++ Response 201 (application/json)
+    + Attributes (CreatedUser)
+
+
++ Response 404 (application/json)
+    + Attributes (ErrorNotFound)
+
++ Response 400 (application/json)
+    + Attributes (ErrorUnauthorized)
+
++ Request Error token length
+
+    + Headers
+
+            Authentication: Bearer JWT
+
+            Accept: application/json
+            Content-Type: application/json
+    + Attributes (User)
+
+
++ Response 401 (application/json)
+    + Attributes (ErrorToken)
+
+
+
+
++ Request Invalid token
+
+    + Headers
+
+            Authentication: Bearer JWT
+
+            Accept: application/json
+            Content-Type: application/json
+    + Attributes (User)
+
+
++ Response 401 (application/json)
+    + Attributes (ErrorTokenInvalid)
+
+
++ Request No token provided
+
+    + Headers
+
+            Authentication: Bearer JWT
+
+            Accept: application/json
+            Content-Type: application/json
+    + Attributes (User)
+
+
++ Response 401 (application/json)
+    + Attributes (ErrorNoToken)
+
+
++ Request Token malformatted
+
+    + Headers
+
+            Authentication: Bearer JWT
+
+            Accept: application/json
+            Content-Type: application/json
+    + Attributes (User)
+
++ Response 401 (application/json)
+    + Attributes (ErrorTokenMalformatted)
+
+
+# Data Structures
+
+
+## Tool (object)
++ title (string) - Tool title
++ description (string) - Tool description
++ link (string) - Tool link
++ tags (array[string]) - Tool tags list
+
+
+## CreatedTool (object)
++ title (string) - Tool title
++ description (string) - Tool description
++ link (string) - Tool link
++ tags (array[string]) - Tool tags list
++ _id (string) - Processed ID
+
+
+## User (object)
++ username (string) - User username
++ password (string) - User password
++ tools: [] (array[CreatedTool]) - Tools saved by user
+
+
+## CreatedUser (object)
++ username (string) - User username
++ password (string) - User password
++ tools: [] (array[CreatedTool]) - Tools saved by user
++ _id (string) - Processed ID
+
+
+## ErrorNotFound (object)
++ code: 404 (number) - Status code
++ message: Not Found (string) - Mensagem do status
++ description (string) - Descrição do status
+
+## ErrorUnauthorized (object)
++ code: 400 (number) - Status code
++ message: Unauthorized (string) - Mensagem do status
++ description (string) - Descrição do status
+
+## ErrorNoToken (object)
++ code: 401 (number) - Status code
++ message: No token provided (string) - Mensagem do status
++ description (string) - Descrição do status
+
+## ErrorToken (object)
++ code: 401 (number) - Status code
++ message: Token error (string) - Mensagem do status
++ description (string) - Descrição do status
+
+## ErrorTokenMalformatted (object)
++ code: 401 (number) - Status code
++ message: Token malformatted (string) - Mensagem do status
++ description (string) - Descrição do status
+
+## ErrorTokenInvalid (object)
++ code: 401 (number) - Status code
++ message: Token invalid (string) - Mensagem do status
++ description (string) - Descrição do status
+
+
+
+## OAuth grant request (object)
++ `grant_type`: `client_credentials` (string, required)
+
+## OAuth jwt-bearer grant request (object)
++ `grant_type`: `urn:ietf:params:oauth:grant-type:jwt-bearer` (string, required)
++ assertion: `eyJhbGciOiJIUzI1NiJ9.e30.XmNK3GpH3Ys_7wsYBfq4C3M6goz71I7dTgUkuIa5lyQ` (string, required)
+
+## OAuth valid response (object)
++ `access_token`: `eyJhbGciOiJIUzI1NiJ9.e30.XmNK3GpH3Ys_7wsYBfq4C3M6goz71I7dTgUkuIa5lyQ` (string, required) - valid JWT
++ scope: all (string, required) - scopes of current token
++ `expires_in`: 300 (number, required)
++ `token_type`: Bearer (string, required)

@@ -48,7 +48,6 @@ describe('Users controller', () => {
   it('should not list one user without valid id and should return 404', async () => {
     const response = await request(app).get('/users/15151').send();
     expect(response.status).toBe(404);
-    expect(response.body).toStrictEqual({});
   });
 
   it('should store and return user with valid fields', async () => {
@@ -67,7 +66,6 @@ describe('Users controller', () => {
     const response = await request(app).post('/users').send(userData);
 
     expect(response.status).toBe(400);
-    expect(response.body).toStrictEqual({});
   });
 
   it('should update and return user with valid token and id', async () => {
@@ -87,16 +85,20 @@ describe('Users controller', () => {
     expect(response.body._id).toBeDefined();
   });
 
-  it('should not update and return user without valid token', async () => {
-    const userData = getUserData();
-    const updatedUser = getUserData();
-    const user = await userModel.create(userData);
+  it('should not update another user', async () => {
+    const userToRequestData = getUserData();
+    await userModel.create(userToRequestData);
+    const userToUpdate = await userModel.create(getUserData());
 
-    const token = faker.internet.password();
+    const loginResponse = await request(app)
+      .get('/login')
+      .send(userToRequestData);
+    const token = loginResponse.body.token;
     const response = await request(app)
-      .put(`/users/${user._id}`)
+      .put(`/users/${userToUpdate._id}`)
       .set('Authorization', `Bearer ${token}`)
-      .send(updatedUser);
+      .send(userToUpdate);
+
     expect(response.body.error).toBe('Unauthorized');
     expect(response.status).toBe(400);
   });
@@ -112,7 +114,6 @@ describe('Users controller', () => {
       .set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(404);
-    expect(response.body).toStrictEqual({});
   });
 
   it('should delete user with valid id and token', async () => {
@@ -127,19 +128,23 @@ describe('Users controller', () => {
       .send();
     expect(response.body.error).toBe(undefined);
     expect(response.status).toBe(204);
-    expect(response.body).toStrictEqual({});
   });
 
-  it('should not delete user without valid token', async () => {
-    const userData = getUserData();
-    const updatedUser = getUserData();
-    const user = await userModel.create(userData);
+  it('should not delete another user.', async () => {
+    const userToRequestData = getUserData();
+    await userModel.create(userToRequestData);
+    const userToUpdate = await userModel.create(getUserData());
 
-    const token = faker.internet.password();
+    const loginResponse = await request(app)
+      .get('/login')
+      .send(userToRequestData);
+    const token = loginResponse.body.token;
+
     const response = await request(app)
-      .put(`/users/${user._id}`)
+      .delete(`/users/${userToUpdate._id}`)
       .set('Authorization', `Bearer ${token}`)
-      .send(updatedUser);
+      .send(userToUpdate);
+
     expect(response.body.error).toBe('Unauthorized');
     expect(response.status).toBe(400);
   });
@@ -155,7 +160,6 @@ describe('Users controller', () => {
       .set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(404);
-    expect(response.body).toStrictEqual({});
   });
 
   /*
