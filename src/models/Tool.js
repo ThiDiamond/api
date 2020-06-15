@@ -18,9 +18,6 @@ const ToolSchema = new mongoose.Schema({
     required: true,
     default: [],
   },
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-  },
   createdAt: {
     type: Date,
     default: Date.now,

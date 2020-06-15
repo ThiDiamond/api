@@ -4,9 +4,8 @@ const Tool = mongoose.model('Tool');
 module.exports = {
   async index(req, res) {
     const { tag } = req.query;
-    const userId = req.header('userId');
-    const filter = { userId };
-    if (tag) filter.tag = tag;
+    const filter = {};
+    if (tag) filter.tags = tag;
     const tools = await Tool.find(filter);
     res.json(tools);
   },
@@ -31,7 +30,7 @@ module.exports = {
       const tool = await Tool.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
       });
-      return res.json(tool);
+      return res.status(201).json(tool);
     } catch (error) {
       return res.status(404).send();
     }

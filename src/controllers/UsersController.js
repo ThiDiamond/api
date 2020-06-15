@@ -4,12 +4,14 @@ const User = mongoose.model('User');
 module.exports = {
   async index(req, res) {
     const users = await User.find();
-    res.json(users);
+    return res.json(users);
   },
   async show(req, res) {
     try {
-      const user = await User.findById(req.params.id);
-      return res.json(user);
+      const user = await (await User.findById(req.params.id))
+        .populate('tools')
+        .execPopulate();
+      return user ? res.json(user) : res.status(404).send();
     } catch (error) {
       res.status(404).send();
     }
@@ -25,9 +27,14 @@ module.exports = {
   },
   async update(req, res) {
     try {
-      const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+      const { id } = req.params;
+      const { userId } = req;
+
+      if (id !== userId) return res.status(400).send('Unauthorized');
+      const user = await User.findByIdAndUpdate(id, req.body, {
         new: true,
       });
+
       return res.json(user);
     } catch (error) {
       return res.status(404).send();
@@ -36,7 +43,13 @@ module.exports = {
 
   async destroy(req, res) {
     try {
-      const user = await User.findById(req.params.id);
+      const { id } = req.params;
+      const { userId } = req;
+
+      if (id !== userId) return res.status(400).send('Unauthorized');
+
+      const user = await User.findById(id);
+
       await user.remove();
       return res.status(204).send();
     } catch (error) {

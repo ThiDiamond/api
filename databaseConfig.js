@@ -1,15 +1,26 @@
 const mongoose = require('mongoose');
-const requireDir = require('require-dir');
 
-const { DB_HOST, DB_PORT, DB_USER, DB_PASS, DB_NAME } = process.env;
+const {
+  DB_HOST,
+  NODE_ENV,
+  DB_PORT,
+  DB_USER,
+  DB_PASS,
+  DB_NAME,
+  MONGO_URL,
+} = process.env;
+const url =
+  NODE_ENV === 'test'
+    ? MONGO_URL
+    : `mongodb://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=admin`;
 
-//iniciando o db
-mongoose.connect(
-  `mongodb://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=admin`,
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+module.exports = async () => {
+  try {
+    await mongoose.connect(url, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+  } catch (error) {
+    console.log(error);
   }
-);
-
-requireDir('./src/models/');
+};

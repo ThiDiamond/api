@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const authConfig = require('../config/auth.json');
 
 module.exports = {
   async login(req, res) {
@@ -17,16 +16,10 @@ module.exports = {
 
     user.password = undefined;
 
-    const token = await jwt.sign({ id: user.id }, authConfig.secret, {
+    const token = await jwt.sign({ id: user.id }, process.env.APP_SECRET, {
       expiresIn: 86400,
     });
 
     return res.send({ user, token });
-  },
-
-  async store(req, res) {
-    const user = await User.create(req.body);
-
-    return res.json(user);
   },
 };

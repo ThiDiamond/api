@@ -13,6 +13,13 @@ const UserSchema = mongoose.Schema({
     required: true,
     select: false,
   },
+
+  tools: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Tool',
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,
