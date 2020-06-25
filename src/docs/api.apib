@@ -1,15 +1,18 @@
 FORMAT: 1A
 HOST: http://api.sample.com.br/v1
 
-# Sample da API
+# Backend API Challenge BossaBox
 
-Descrição da Sample.
+
+A simple API created to show my skills using NodeJS, Express, Mongoose, and additional features like CI/CD pipelines, JWT authentication, tests and Docker containers.
+
 
 # Group API
 
 ## Sobre [/]
 
-Aqui podemos descrever detalhes que são comuns a todos os serviços como formatos, headers, tipos de erros, etc
+All routes are described below, but this API is basicaly abble to list, store, update and delete tools and users from database.
+Only two endpoints are protected by JWT token (DELETE users/{id} - PUT users/{id}), this make sure the user should only can modify and delete his self data.
 
 # Group Tools
 
@@ -37,10 +40,10 @@ Aqui podemos descrever detalhes que são comuns a todos os serviços como format
     + Attributes (ErrorNotFound)
 
 
-## Tool [/tools/{id_tool}]
+## Tool [/tools/{id}]
 
 + Parameters
-    + id_tool: 1 (string, required) - Tool ID
+    + id: 5ee8e6d0e24682149e927520 (string, required) - Tool ID
 
 ### List single tool [GET]
 
@@ -103,10 +106,10 @@ Aqui podemos descrever detalhes que são comuns a todos os serviços como format
     + Attributes (ErrorNotFound)
 
 
-## User [/users/{id_user}]
+## User [/users/{id}]
 
 + Parameters
-    + id_user: 1 (string, required) - User ID
+    + id: 5ee8e6d0e24682149e927520 (string, required) - User ID
 
 ### List single user [GET]
 
@@ -137,55 +140,6 @@ Aqui podemos descrever detalhes que são comuns a todos os serviços como format
 
 + Response 401 (application/json)
     + Attributes (ErrorToken)
-    + Attributes (ErrorNoToken)
-    + Attributes (ErrorTokenInvalid)
-    + Attributes (ErrorTokenMalformatted)
-
-+ Request Error token length
-
-    + Headers
-
-            Authentication: Bearer JWT
-
-
-+ Response 401 (application/json)
-    + Attributes (ErrorToken)
-
-
-+ Request Invalid token
-
-    + Headers
-
-            Authentication: Bearer JWT
-
-
-
-+ Response 401 (application/json)
-    + Attributes (ErrorTokenInvalid)
-
-
-+ Request No token provided
-
-    + Headers
-
-            Authentication: Bearer JWT
-
-
-
-+ Response 401 (application/json)
-    + Attributes (ErrorNoToken)
-
-
-+ Request Token malformatted
-
-    + Headers
-
-            Authentication: Bearer JWT
-
-
-+ Response 401 (application/json)
-    + Attributes (ErrorTokenMalformatted)
-
 
 
 ## Update user PROTECTED [PUT]
@@ -209,134 +163,60 @@ Aqui podemos descrever detalhes que são comuns a todos os serviços como format
 + Response 400 (application/json)
     + Attributes (ErrorUnauthorized)
 
-+ Request Error token length
-
-    + Headers
-
-            Authentication: Bearer JWT
-
-            Accept: application/json
-            Content-Type: application/json
-    + Attributes (User)
-
 
 + Response 401 (application/json)
     + Attributes (ErrorToken)
-
-
-
-
-+ Request Invalid token
-
-    + Headers
-
-            Authentication: Bearer JWT
-
-            Accept: application/json
-            Content-Type: application/json
-    + Attributes (User)
-
-
-+ Response 401 (application/json)
-    + Attributes (ErrorTokenInvalid)
-
-
-+ Request No token provided
-
-    + Headers
-
-            Authentication: Bearer JWT
-
-            Accept: application/json
-            Content-Type: application/json
-    + Attributes (User)
-
-
-+ Response 401 (application/json)
-    + Attributes (ErrorNoToken)
-
-
-+ Request Token malformatted
-
-    + Headers
-
-            Authentication: Bearer JWT
-
-            Accept: application/json
-            Content-Type: application/json
-    + Attributes (User)
-
-+ Response 401 (application/json)
-    + Attributes (ErrorTokenMalformatted)
 
 
 # Data Structures
 
 
 ## Tool (object)
-+ title (string) - Tool title
-+ description (string) - Tool description
-+ link (string) - Tool link
-+ tags (array[string]) - Tool tags list
++ title: hotel (string, required) - Tool title
++ link: https://github.com/typicode/hotel (string, required) - Tool link
++ description: Local app manager. Start apps within your browser, developer tool with local .localhost domain and https out of the box.  (string, required) - Tool description
++ tags: node, organizing, webapps, domain, developer, https, proxy (array[string]) - Tool tags list
 
 
 ## CreatedTool (object)
-+ title (string) - Tool title
-+ description (string) - Tool description
-+ link (string) - Tool link
-+ tags (array[string]) - Tool tags list
-+ _id (string) - Processed ID
++ title: hotel (string, required) - Tool title
++ link: https://github.com/typicode/hotel (string, required) - Tool link
++ description: Local app manager. Start apps within your browser, developer tool with local .localhost domain and https out of the box.  (string, required) - Tool description
++ tags: node, organizing, webapps, domain, developer, https, proxy (array[string]) - Tool tags list
++ _id: 5ed92b9135d82d005398d624 (string) - Processed ID
 
 
 ## User (object)
-+ username (string) - User username
-+ password (string) - User password
-+ tools: [] (array[CreatedTool]) - Tools saved by user
++ username: MyUser (string, required) - User username
++ password: MyPassword (string, required) - User password
++ tools (array[string]) - Tools saved by user
 
 
 ## CreatedUser (object)
 + username (string) - User username
 + password (string) - User password
-+ tools: [] (array[CreatedTool]) - Tools saved by user
-+ _id (string) - Processed ID
++ tools (array[string]) - IDs list of tools saved by the user
++ _id: 5ed92b9135d82d005398d624 (string) - Processed ID
 
 
 ## ErrorNotFound (object)
 + code: 404 (number) - Status code
 + message: Not Found (string) - Mensagem do status
-+ description (string) - Descrição do status
++ description: Description of error here (string) - Descrição do status
 
 ## ErrorUnauthorized (object)
-+ code: 400 (number) - Status code
-+ message: Unauthorized (string) - Mensagem do status
-+ description (string) - Descrição do status
-
-## ErrorNoToken (object)
-+ code: 401 (number) - Status code
-+ message: No token provided (string) - Mensagem do status
-+ description (string) - Descrição do status
++ error: Unauthorized (string) - Error message
 
 ## ErrorToken (object)
-+ code: 401 (number) - Status code
-+ message: Token error (string) - Mensagem do status
-+ description (string) - Descrição do status
++ error: Some token error here (string) - Error message
 
-## ErrorTokenMalformatted (object)
-+ code: 401 (number) - Status code
-+ message: Token malformatted (string) - Mensagem do status
-+ description (string) - Descrição do status
-
-## ErrorTokenInvalid (object)
-+ code: 401 (number) - Status code
-+ message: Token invalid (string) - Mensagem do status
-+ description (string) - Descrição do status
 
 
 
 ## OAuth grant request (object)
 + `grant_type`: `client_credentials` (string, required)
 
-## OAuth jwt-bearer grant request (object)
+## OAuth jwt bearer grant request (object)
 + `grant_type`: `urn:ietf:params:oauth:grant-type:jwt-bearer` (string, required)
 + assertion: `eyJhbGciOiJIUzI1NiJ9.e30.XmNK3GpH3Ys_7wsYBfq4C3M6goz71I7dTgUkuIa5lyQ` (string, required)
 

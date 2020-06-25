@@ -63,7 +63,7 @@ describe('Tools controller', () => {
   it('should not list one tool with invalid id and should return 404', async () => {
     const response = await request(app).get('/tools/15151').send();
     expect(response.status).toBe(404);
-    expect(response.body).toStrictEqual({});
+    expect(response.body.error).toBe('Not found');
   });
 
   it('should store and return tool with valid fields', async () => {
@@ -110,7 +110,7 @@ describe('Tools controller', () => {
     const response = await request(app).put('/tools/15151').send(toolData);
 
     expect(response.status).toBe(404);
-    expect(response.body).toStrictEqual({});
+    expect(response.body.error).toBe('Not found');
   });
   it('should delete tool with valid id', async () => {
     const toolData = getToolData();
@@ -125,6 +125,6 @@ describe('Tools controller', () => {
     const response = await request(app).delete('/tools/15151').send();
 
     expect(response.status).toBe(404);
-    expect(response.body).toStrictEqual({});
+    expect(response.body.error).toBe('Not found');
   });
 });

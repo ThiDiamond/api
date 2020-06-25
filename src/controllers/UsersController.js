@@ -1,3 +1,4 @@
+const notFoundError = { error: 'Not found' };
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
 
@@ -13,7 +14,7 @@ module.exports = {
 
       return res.json(processedUser);
     } catch (error) {
-      res.status(404).send();
+      res.status(404).send(notFoundError);
     }
   },
   async store(req, res) {
@@ -22,7 +23,7 @@ module.exports = {
       user.password = undefined;
       return res.status(201).json(user);
     } catch (error) {
-      return res.status(400).send();
+      return res.status(400).send(notFoundError);
     }
   },
   async update(req, res) {
@@ -42,7 +43,7 @@ module.exports = {
 
       return res.json(user);
     } catch (error) {
-      return res.status(404).send();
+      return res.status(404).send(notFoundError);
     }
   },
 
@@ -60,7 +61,7 @@ module.exports = {
       await user.remove();
       return res.status(204).send();
     } catch (error) {
-      res.status(404).send();
+      res.status(404).send(notFoundError);
     }
   },
 };

@@ -37,6 +37,7 @@ describe('Users controller', () => {
     const userData = getUserData();
 
     const user = await userModel.create(userData);
+
     const response = await request(app).get(`/users/${user._id}`);
     expect(response.body.error).toBe(undefined);
     expect(response.status).toBe(200);
@@ -48,6 +49,7 @@ describe('Users controller', () => {
   it('should not list one user without valid id and should return 404', async () => {
     const response = await request(app).get('/users/15151').send();
     expect(response.status).toBe(404);
+    expect(response.body.error).toBe('Not found');
   });
 
   it('should store and return user with valid fields', async () => {
@@ -114,6 +116,7 @@ describe('Users controller', () => {
       .set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(404);
+    expect(response.body.error).toBe('Not found');
   });
 
   it('should delete user with valid id and token', async () => {
@@ -160,6 +163,7 @@ describe('Users controller', () => {
       .set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(404);
+    expect(response.body.error).toBe('Not found');
   });
 
   /*

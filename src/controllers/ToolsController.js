@@ -1,3 +1,4 @@
+const notFoundError = { error: 'Not found' };
 const mongoose = require('mongoose');
 const Tool = mongoose.model('Tool');
 
@@ -7,14 +8,14 @@ module.exports = {
     const filter = {};
     if (tag) filter.tags = tag;
     const tools = await Tool.find(filter);
-    res.json(tools);
+    return res.json(tools);
   },
   async show(req, res) {
     try {
       const tool = await Tool.findById(req.params.id);
       return res.json(tool);
     } catch (error) {
-      res.status(404).send();
+      return res.status(404).send(notFoundError);
     }
   },
   async store(req, res) {
@@ -32,7 +33,7 @@ module.exports = {
       });
       return res.status(201).json(tool);
     } catch (error) {
-      return res.status(404).send();
+      return res.status(404).send(notFoundError);
     }
   },
 
@@ -42,7 +43,7 @@ module.exports = {
       await tool.remove();
       return res.status(204).send();
     } catch (error) {
-      res.status(404).send();
+      return res.status(404).send(notFoundError);
     }
   },
 };

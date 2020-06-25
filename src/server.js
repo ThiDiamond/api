@@ -1,5 +1,9 @@
 const { SERVER_PORT } = process.env;
 
+const configDB = require('../databaseConfig');
+
+configDB();
+
 //iniciando o app
 const app = require('./app');
 
