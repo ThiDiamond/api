@@ -15,8 +15,8 @@ class AppController {
   }
 
   middlewares() {
-    this.express.use(express.json());
     this.express.use(cors({}));
+    this.express.use(express.json());
   }
 
   routes() {
