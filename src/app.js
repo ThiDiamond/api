@@ -9,10 +9,7 @@ class AppController {
     this.routes();
   }
 
-  models() {
-    require('./models/Tool');
-    require('./models/User');
-  }
+  models() {}
 
   middlewares() {
     this.express.use(cors({}));
