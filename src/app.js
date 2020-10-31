@@ -9,7 +9,9 @@ class AppController {
     this.routes();
   }
 
-  models() {}
+  models() {
+    require('./models/Post');
+  }
 
   middlewares() {
     this.express.use(cors({}));
@@ -17,7 +19,7 @@ class AppController {
   }
 
   routes() {
-    this.express.use(require('./routes'));
+    this.express.use(require('./Routes'));
   }
 }
 
