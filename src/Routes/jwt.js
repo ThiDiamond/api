@@ -2,7 +2,7 @@ const express = require('express');
 const routes = express.Router();
 const AuthController = require('../controllers/AuthController');
 
-const auth = require('./middlewares/auth');
+const auth = require('../middlewares/auth');
 
 //Docs route
 routes.get('/docs/', (req, res) =>
